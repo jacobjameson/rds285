@@ -1,0 +1,22 @@
+---
+title: "Assignment 1"
+author: "Jacob Jameson"
+date: "2023-02-01"
+output: pdf_document
+---
+
+### Markov Models
+
+
+(a) Write down a transition probability matrix for this Markov chain. 
+ 
+ 
+(b) How many cycles must elapse by the time ³ 25% of the population is dead? Show all hand 
+calculations using matrix algebra (you may use TreeAge software or Excel to check your 
+calculations). 
+ 
+ 
+
+(c) For persons who are ill, what is the 5-year survival probability?  [Hint: consider your 
+starting population] 
+
