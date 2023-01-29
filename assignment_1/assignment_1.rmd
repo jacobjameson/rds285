@@ -7,16 +7,260 @@ output: pdf_document
 
 ### Markov Models
 
+Consider a Markov model with a cycle length of one year.  For people who are well, their annual 
+probability of becoming ill is 0.20 and their annual probability of dying from other causes is 
+0.05. For any given year (i.e., within a cycle), if people who are well become ill, they face a 0.30 
+probability that they will die from the illness that year; in subsequent years, their annual 
+probability of dying from illness or other causes is 0.10. People who are ill can never return to 
+the WELL state. Assume that people are initially well. 
+
 
 (a) Write down a transition probability matrix for this Markov chain. 
  
  
-(b) How many cycles must elapse by the time ³ 25% of the population is dead? Show all hand 
+\color{red}
+A transition probability matrix for this Markov chain can be defined in the following way:
+
+\[\begin{bmatrix}  0.75 & 0.2 & 0 & 0.05 \\
+0 & 0 & 0.7  & 0.3 \\
+0 & 0 & 0.9 & 0.1 \\
+ 0 & 0 & 0 & 1 \\\end{bmatrix} \hspace{1in} \begin{matrix} 
+\text{} & \text{Well} & \text{Ill} & \text{Living with Illness} & \text{Death}\\
+\text{Well} & 0.75 & 0.2 & 0 & 0.05 \\
+\text{Ill} & 0 & 0 & 0.7  & 0.3 \\
+\text{Living with Illness} & 0 & 0 & 0.9 & 0.1 \\
+\text{Death} & 0 & 0 & 0 & 1 \\
+\end{matrix}\]
+\color{black}
+
+
+(b) How many cycles must elapse by the time $\geq$ 25\% of the population is dead? Show all hand 
 calculations using matrix algebra (you may use TreeAge software or Excel to check your 
-calculations). 
+calculations).
+
+\color{red}
+Assuming that all people are initially well, the current state of the population in $t=0$ is:
+
+\[\begin{bmatrix} 1 & 0 & 0 & 0 \end{bmatrix}\]
+
+To determine how many cycles must elapse before more than 25\% of the population is dead, we just multiply our current state vector by the probability matrix in (a).
+
+\begin{equation}\begin{bmatrix} 1 & 0 & 0 & 0 \end{bmatrix} \begin{bmatrix}  0.75 & 0.2 & 0 & 0.05 \\
+0 & 0 & 0.7  & 0.3 \\
+0 & 0 & 0.9 & 0.1 \\
+ 0 & 0 & 0 & 1 \\\end{bmatrix} = \begin{bmatrix} 0.75 & 0.2 & 0 & 0.05 \end{bmatrix}\end{equation}
+
+\begin{equation}\begin{bmatrix} 0.75 & 0.2 & 0 & 0.05 \end{bmatrix} \begin{bmatrix}  0.75 & 0.2 & 0 & 0.05 \\
+0 & 0 & 0.7  & 0.3 \\
+0 & 0 & 0.9 & 0.1 \\
+ 0 & 0 & 0 & 1  \end{bmatrix} = \begin{bmatrix} 0.563 & 0.15 & 0.14 & 0.148 \end{bmatrix}\end{equation}
  
+\begin{equation}\begin{bmatrix} 0.563 & 0.15 & 0.14 & 0.148 \end{bmatrix} 
+\begin{bmatrix}  0.75 & 0.2 & 0 & 0.05 \\
+0 & 0 & 0.7  & 0.3 \\
+0 & 0 & 0.9 & 0.1 \\
+ 0 & 0 & 0 & 1  \end{bmatrix} = \begin{bmatrix} 0.422 & 0.113 & 0.231 & 0.235
+\end{bmatrix}\end{equation}
+
+
+\begin{equation}\begin{bmatrix}  0.422 & 0.113 & 0.231 & 0.235 \end{bmatrix} 
+\begin{bmatrix}  0.75 & 0.2 & 0 & 0.05 \\
+0 & 0 & 0.7  & 0.3 \\
+0 & 0 & 0.9 & 0.1 \\
+0 & 0 & 0 & 1  \end{bmatrix} = \begin{bmatrix}  0.316 & 0.084 & 0.287 & 0.313
+\end{bmatrix}\end{equation}
  
+It takes \boxed{\text{4 cycles}} before $\geq$ 25\% is dead.
+
+\color{black}
+
+```{r}
+# Define the starting population and probability matrix
+pop <- matrix(c(1, 0, 0, 0), nrow = 1, ncol = 4)
+
+probability_matrix <- matrix(c(0.75, 0.2, 0, 0.05, 
+                               0, 0, 0.7, 0.3, 
+                               0, 0, 0.9, 0.1, 
+                               0, 0, 0, 1), nrow = 4, byrow = TRUE)
+
+# Simulate cycles until 25% or more dead
+t = 0
+while (pop[1,4] < 0.25){
+  pop <- pop %*% probability_matrix
+  t <- t + 1
+}
+
+print(paste('The number of cycles is ', t))
+```
+
+
+
+\newpage
 
 (c) For persons who are ill, what is the 5-year survival probability?  [Hint: consider your 
 starting population] 
+
+\color{red}
+To solve for the 5-year survival probability of people who are ILL, we can do this by initializing our starting population vector such that all of the people in the population are in the ILL category. We can then multiply our population vector by the transition probability matrix 5 times to simulate 5 cycles. Finally, the survival rate will be proportion of the population that is in the LIVING WITH ILLNESS state after the simulation. This is approximately $45.9\%$.
+\color{black}
+
+
+```{r}
+# Define the starting population and probability matrix
+pop <- matrix(c(0, 1, 0, 0), nrow = 1, ncol = 4)
+
+probability_matrix <- matrix(c(0.75, 0.2, 0, 0.05, 
+                               0, 0, 0.7, 0.3, 
+                               0, 0, 0.9, 0.1, 
+                               0, 0, 0, 1), nrow = 4, byrow = TRUE)
+
+# Simulate 5 cycles
+for (i in 1:5){
+  pop <- pop %*% probability_matrix
+}
+
+print(paste('For persons who are ill, the 5-year survival probability is ', 
+            pop[1,3]*100, '%'))
+```
+
+
+Consider the Markov model as described for parts (a)-(c) except that each year, people who are 
+well face an unknown probability of becoming ill. A cohort has been followed for 5 years and 
+the proportions of the cohort in the WELL, ILL, and DEAD states have been traced: 
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Cycle} & \textbf{WELL} & \textbf{ILL} & \textbf{DEAD} \\ [0.5ex]
+\hline
+0 & 1.0000 & 0.0000 & 0.0000 \\
+\hline
+1 & 0.6500 & 0.2100 & 0.1400 \\
+\hline
+2 & 0.4550 & 0.3028 & 0.2422 \\
+\hline
+3 & 0.3412 & 0.3362 & 0.3226 \\
+\hline
+4 & 0.2730 & 0.3384 & 0.3886 \\
+\hline
+5 & 0.2320 & 0.3237 & 0.4443 \\ [1ex]
+\hline
+\end{tabular}
+\caption{Markov States}
+\label{table:markovstates}
+\end{table}
+
+
+(d) Use the Markov tracing to determine the annual probability of becoming ill. Does it 
+remain constant over time?  
+
+
+\color{red}
+We see that the annual probability of becoming ill from cycle 0 to cycle 1 is $21\%$. We can also see that the annual probability of well to ill is $14\%$. We also can see from cycle 2 that the proportion of the population that is dead (a state that which can only transition to itself) is $24.22\%$. If we can hold constant the proportion of WELL people that transition to DEAD we would have expected that $9.1\%$ of the total population will have transition from WELL in to DEAD, meaning that the remainder of the population that is dead (0.2422 - 0.14 - 0.91 = 0.0112) comes from those that transitioned from ILL to DEAD.
+
+However, in cycle 2 the ILL population is $30.28\%$ of the total population and we know that $1.12\%$ of the total population transitioned between ILL and DEAD, therefore the probability of transitioning from WELL to ILL is 
+
+It is not consistent.
+\color{black}
+
+
+
+Consider a different Markov model with the following three states: WELL, ILL, and DEAD. Suppose that a new medication has been discovered, which can reduce the probability that illness develops by 50%. Tracing A (below) reflects the health of a population that is receiving prophylaxis with this new medication. A new treatment has also been discovered, which can reduce the mortality among those who become ill by 50%. Tracing B represents the health of the population that receives the new treatment once they become ill. Because of a deadly interaction between the medication and the treatment, only one option can be pursued. Assume that the utility of WELL is 1.0, the utility of ILL is 1.0, and the utility of DEAD is 0.
+
+
+(e) Which strategy is preferred: new prophylaxis (Tracing A) or new treatment (Tracing B)?
+
+\color{red}
+The preferred strategy is the new treatment (Tracing B). We can conclude this from taking the sum of the reward column over the span of the total simulation. When doing this we see that the new treatment (Tracing B) has a higher total utility gained.
+\color{black}
+
+
+```{r}
+cycle.1 <-c(0.0000, 0.8726,  0.7383,  0.6071, 0.4857, 0.3735, 0.2744, 
+            0.1962, 0.1379, 0.0958, 0.0661, 0.0454, 0.0310, 0.0212, 
+            0.0144, 0.0098, 0.0067, 0.0045, 0.0000)
+
+sum(cycle.1)
+
+cycle.2 <- c(0.0000, 0.8762, 0.7430, 0.6103, 0.4863, 0.3747,
+             0.2800, 0.2056, 0.1494, 0.1078, 0.0776, 0.0556,
+             0.0398, 0.0285, 0.0204, 0.0146, 0.0104, 0.0074,
+             0.0053, 0.0038, 0.0000)
+
+sum(cycle.2)
+
+```
+
+
+
+
+(f) What factor(s) could change the result noted in (e)?
+
+\color{red}
+Factors that could change the result noted in (e) could be if there was a greater utility associated with the WELL state. Since new prophylaxis (Tracing A) allows people to transition from ILL to WELL, if the reward gain from WELL was higher that might allow new prophylaxis (Tracing A) to be the preferred strategy.
+\color{black}
+
+
+\newpage
+
+(g) (Optional) A constant discount rate is used in the analysis. Determine this discount rate $r$
+from the tracings.
+
+
+\color{red}
+To determine the discount rate I will solve the equation:
+
+$$Cycle Reward_n = \frac{\vec{state_n}\cdot\vec{u}}{(1 + r)^n}$$
+
+Where $Cycle Reward_n$ is the cycle reward for the $n$th cycle, $\vec{state_n}$ is the distribution of WELL, ILL, DEAD in $n$th cycle, $\vec{u}$ is the utility weights defined in the problem, and $r$ is the constant discount rate.
+
+Solving this in cycle 1 for Tracing A:
+
+$$0.8726 = \frac{0.9163}{(1 + r)^1} \implies  r = \frac{0.9163 - 0.8726}{0.8726}$$
+
+$$\implies  r \approx 0.05008022$$
+We can validate this is the correct $r$ by solving for every cycle reward of Tracing A and Tracing B:
+
+\color{black}
+
+
+```{r}
+states <- matrix(c(1.0000, 0.0000, 0.0000,
+                  0.8788, 0.0375, 0.0838,
+                  0.7513, 0.0627, 0.1860,
+                  0.6245, 0.0783, 0.2972,
+                  0.5043, 0.0860, 0.4097,
+                  0.3833, 0.0934, 0.5233,
+                  0.2731, 0.0949, 0.6323,
+                  0.1946, 0.0814, 0.7240,
+                  0.1386, 0.0650, 0.7963,
+                  0.0988, 0.0499, 0.8514,
+                  0.0704, 0.0373, 0.8923,
+                  0.0501, 0.0274, 0.9224,
+                  0.0357, 0.0200, 0.9443,
+                  0.0255, 0.0145, 0.9601,
+                  0.0181, 0.0104, 0.9715,
+                  0.0129, 0.0075, 0.9796,
+                  0.0092, 0.0054, 0.9854,
+                  0.0066, 0.0038, 0.9896,
+                  0.0047, 0.0027, 0.9926), nrow = 19, byrow = TRUE)
+
+utility.weights <- c(1, 1, 0)
+r <- 0.0501
+rewards <- rep(0,19)
+
+for (cycle in 0:18){
+  rewards[cycle+1] = round(sum(states[cycle+1,]*utility.weights)/(1+r)^cycle,4)
+}
+
+rewards
+```
+
+
+
+
+
+
+
 
