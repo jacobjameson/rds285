@@ -158,7 +158,7 @@ remain constant over time?
 
 
 \color{red}
-Assuming the only probability that is unknown is the probability from WELL to ILL (and that all other transition probability are the same as  (a)-(c)), we can deduce by looking at cycle 0 to cycle 1, that the probability of transitioning from WELL to ILL is $21\%$. That means that the transition state matrix is:
+Assuming the only probability that is unknown is the probability from WELL to ILL (and that all other transition probability are the same as  (a)-(c)), we can deduce by looking at cycle 0 to cycle 1, that the annual probability of transitioning from WELL to ILL is $21\%$. That means that the transition state matrix is:
 
 
 \[\begin{bmatrix} 0.65 & 0.21 & 0.14 \\
