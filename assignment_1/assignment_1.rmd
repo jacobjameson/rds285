@@ -1,9 +1,11 @@
 ---
 title: "Assignment 1"
 author: "Jacob Jameson"
-date: "2023-02-01"
+date: "Due Feb 1"
 output: pdf_document
 ---
+
+*Collaborators: Jenna Rogers*
 
 ```{r, include=F,message=F}
 library(knitr)
@@ -46,20 +48,27 @@ Assuming that all people are initially well, the current state of the population
 
 \[\begin{bmatrix} 1 & 0 & 0 \end{bmatrix}\]
 
-To determine how many cycles must elapse before more than 25\% of the population is dead, we just multiply our current state vector by the probability matrix in (a).
+To determine how many cycles must elapse before more than 25\% of the population is dead, we just multiply our current state vector by the probability matrix in (a) as many times as we need until 25\% of the population is dead.
 
 \begin{equation}\begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
 0 & 0.9 & 0.1 \\
-0 & 0 & 1 \end{bmatrix} = \begin{bmatrix} 0.75 & 0.14 & 0.11 \end{bmatrix}\end{equation}
+0 & 0 & 1 \end{bmatrix} = \begin{bmatrix} 1 \times 0.75 & 1 \times 0.14 & 1 \times 0.11 \end{bmatrix} = \begin{bmatrix} 0.75 & 0.14 & 0.11 \end{bmatrix}\end{equation}
 
 
-\begin{equation}\implies \begin{bmatrix}  0.75 & 0.14 & 0.11 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
+\begin{equation} \begin{bmatrix}  0.75 & 0.14 & 0.11 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
 0 & 0.9 & 0.1 \\
- 0 & 0 & 1 \end{bmatrix} = \begin{bmatrix} 0.5625 & 0.231 & 0.2065 \end{bmatrix}\end{equation}
+ 0 & 0 & 1 \end{bmatrix} \end{equation}
+ 
+\[\implies \begin{bmatrix} 0.75 \times 0.75 & 0.75 \times 0.14 + 0.14 \times 0.9 & 0.75 \times 0.11 + 0.14 \times 0.1 + 0.11 \times 1 \end{bmatrix} = \begin{bmatrix} 0.5625 & 0.231 & 0.2065 \end{bmatrix}\]
 
-\begin{equation}\implies \begin{bmatrix}  0.5625 & 0.231 & 0.2065 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
+
+\begin{equation}\begin{bmatrix}  0.5625 & 0.231 & 0.2065 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
 0 & 0.9 & 0.1 \\
- 0 & 0 & 1 \end{bmatrix} = \begin{bmatrix} 0.421875 & 0.28665 & 0.291475 \end{bmatrix}\end{equation}
+ 0 & 0 & 1 \end{bmatrix} \end{equation}
+
+\[\begin{bmatrix}  0.5625 \times 0.75 & 0.5625 \times 0.14 + 0.231 \times 0.9 & 0.5625 \times 0.11 + 0.231 \times 0.1 + 0.2065 \times 1 \end{bmatrix}\]
+
+\[= \begin{bmatrix} 0.421875 & 0.28665 & 0.291475 \end{bmatrix}\]
 
 
 It takes \boxed{\text{3 cycles}} before $\geq$ 25\% is dead.
@@ -92,7 +101,7 @@ starting population]
 To solve for the 5-year survival probability of people who are ILL, we can do this by initializing our starting population vector such that all of the people in the population are in the ILL category. We can then multiply our population vector by the transition probability matrix 5 times to simulate 5 cycles. Finally, the survival rate will be proportion of the population that is in the ILL state after the simulation. This is approximately $59.049\%$.
 
 
-\[\begin{bmatrix} 1 & 0 & 0 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
+\[\begin{bmatrix} 0 & 1 & 0 \end{bmatrix} \begin{bmatrix}  0.75 & 0.14 & 0.11 \\
 0 & 0.9 & 0.1 \\
 0 & 0 & 1 \end{bmatrix}^5 = \begin{bmatrix}  0 & 0.59049 & 0.40951 \end{bmatrix}\]
 \color{black}
@@ -115,7 +124,6 @@ print(paste('For persons who are ill, the 5-year survival probability is ',
             pop[1,2]*100, '%'))
 ```
 
-\newpage
 
 Consider the Markov model as described for parts (a)-(c) except that each year, people who are 
 well face an unknown probability of becoming ill. A cohort has been followed for 5 years and 
@@ -153,11 +161,11 @@ remain constant over time?
 Assuming the only probability that is unknown is the probability from WELL to ILL (and that all other transition probability are the same as  (a)-(c)), we can deduce by looking at cycle 0 to cycle 1, that the probability of transitioning from WELL to ILL is $21\%$. That means that the transition state matrix is:
 
 
-\[\begin{bmatrix} 0.75 & 0.21 & 0.11 \\
+\[\begin{bmatrix} 0.65 & 0.21 & 0.14 \\
 0 & 0.9 & 0.1 \\
  0 & 0 & 1 \\\end{bmatrix} \hspace{1in} \begin{matrix} 
 \text{} & \text{Well} & \text{Ill}  & \text{Death}\\
-\text{Well} & 0.75 & 0.21 & 0.11 \\
+\text{Well} & 0.65 & 0.21 & 0.14 \\
 \text{Ill} & 0 & 0.9 & 0.1 \\
 \text{Death} & 0 & 0 & 1 \\
 \end{matrix}\]
@@ -172,7 +180,7 @@ Now to see if that probability remains constant over time, we can simulate the 5
 # Define the starting population and probability matrix
 pop <- matrix(c(1, 0, 0), nrow = 1, ncol = 3)
 
-probability_matrix <- matrix(c(0.75, 0.21, 0.11, 
+probability_matrix <- matrix(c(0.65, 0.21, 0.14, 
                                0, 0.9, 0.1, 
                                0, 0, 1), nrow = 3, byrow = TRUE)
 
@@ -229,7 +237,7 @@ sum(cycle.2)
 (f) What factor(s) could change the result noted in (e)?
 
 \color{red}
-Factors that could change the result noted in (e) could be if there was a smaller utility associated with the ILL state. Since new prophylaxis (Tracing A) allows people to transition from ILL to WELL, if the reward gain from WELL was higher that might allow new prophylaxis (Tracing A) to be the preferred strategy. Alson since the new treatment (Tracing B) has a greater fraction of its lifetime cycle reward deriving from ILL people's utility, if that utility weight were smaller it would disproportinately effect the sum of the lifetime reward for Tracing B compared to Tracing A.
+Factors that could change the result noted in (e) could be if there was a smaller utility associated with the ILL state. Since new prophylaxis (Tracing A) allows people to transition from ILL to WELL, if the reward gain from WELL was higher that might allow new prophylaxis (Tracing A) to be the preferred strategy. Also, since the new treatment (Tracing B) has a greater fraction of its lifetime cycle reward deriving from ILL people's utility, if that utility weight were smaller it would disproportionately effect the sum of the lifetime reward for Tracing B compared to Tracing A.
 \color{black}
 
 
@@ -257,8 +265,7 @@ We can validate this is the correct $r$ by solving for every cycle reward of Tra
 
 
 ```{r}
-states <- matrix(c(1.0000, 0.0000, 0.0000,
-                  0.8788, 0.0375, 0.0838,
+states <- matrix(c(0.8788, 0.0375, 0.0838,
                   0.7513, 0.0627, 0.1860,
                   0.6245, 0.0783, 0.2972,
                   0.5043, 0.0860, 0.4097,
@@ -275,13 +282,13 @@ states <- matrix(c(1.0000, 0.0000, 0.0000,
                   0.0129, 0.0075, 0.9796,
                   0.0092, 0.0054, 0.9854,
                   0.0066, 0.0038, 0.9896,
-                  0.0047, 0.0027, 0.9926), nrow = 19, byrow = TRUE)
+                  0.0047, 0.0027, 0.9926), nrow = 18, byrow = TRUE)
 
 utility.weights <- c(1, 1, 0)
-r <- 0.0501
-rewards <- rep(0,19)
+r <- 0.05
+rewards <- rep(0,18)
 
-for (cycle in 0:18){
+for (cycle in 0:17){
   rewards[cycle+1] = round(sum(states[cycle+1,]*utility.weights)/(1+r)^cycle,4)
 }
 
