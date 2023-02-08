@@ -1,0 +1,29 @@
+---
+title: "Assignment 3"
+author: "Jacob Jameson"
+date: "Due Feb 27"
+output: pdf_document
+---
+
+
+1. Construct this decision-analytic model in TreeAge (or another software package) using the information provided in the paper.
+
+2. Calculate the life expectancy for each strategy for at least one of the age/gender groups. Note: for background mortality, use the 2018 US life tables. These are published by the National Center for Health Statistics:
+
+- Go to https://www.cdc.gov/nchs/products/life_tables.html
+
+- Click on the pdf link for the "United States Life Tables, 2020" (NVSR Volume 71,
+Number 1)
+
+- On pages 17 and 19 in this document (Tables 2 and 3, top of page) there are links to download 2020 life tables for men and women respectively.
+
+- In these spreadsheets, the first column (qx) provides annual mortality probabilities.
+
+
+3. Compare your results with those shown in Table 3 of the paper, and discuss potential
+reasons for any discrepancies (besides the different life tables).
+
+
+4. Perform one-way sensitivity analysis on 2 of the key variables.
+
+
