@@ -456,6 +456,19 @@ reducing disease-specific mortality. Calculate the life expectancy of a
 55-year-old woman with disease Y who is receiving treatment Q.</li>
 </ol>
 <p><span style="color:red">SOLUTION</span></p>
+<p>We begin by calculating a new disease-specific hazard rate under
+treatment (20% reduction):</p>
+<p><span class="math display">\[\mu_{y_{tx}}  = 0.8 \mu_Y\]</span></p>
+<pre class="r"><code>mu.y.tx &lt;- 0.8 * mu.y
+print(mu.y.tx)</code></pre>
+<pre><code>## [1] 0.04724934</code></pre>
+<p>Now we can calculate Life Expectancy for a 55 year old woman with
+disease Y who is receiving treatment Q:</p>
+<p><span class="math display">\[LE = \frac{1}{\mu} = \frac{1}{\mu_{ASR}
++ \mu_{y_{tx}}}\]</span></p>
+<pre class="r"><code>LE.55 &lt;- 1/(mu.asr.55 + mu.y.tx)
+print(LE.55)</code></pre>
+<pre><code>## [1] 11.95987</code></pre>
 </div>
 
 
