@@ -1,5 +1,5 @@
 ---
-title: "Lab 1"
+title: "Lab 2"
 author: "Jacob Jameson"
 output: html_document
 ---
@@ -118,6 +118,15 @@ For the 55 year old woman, assuming that $\mu_Y$ and $\mu_Z$ is constant between
 LE.55 <- 1/(mu.asr.55 + mu.y + mu.z)
 print(LE.55)
 ```
+
+
+(c) Consider a treatment (Q) for disease Y that is 20\% effective at reducing disease-specific mortality. Calculate the life expectancy of a 55-year-old woman with disease Y who is receiving treatment Q.
+
+<span style="color:red">SOLUTION</span>
+
+
+
+
 
 
 
