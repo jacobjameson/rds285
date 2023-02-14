@@ -1,0 +1,125 @@
+---
+title: "Lab 1"
+author: "Jacob Jameson"
+output: html_document
+---
+
+
+```{r, include=F,message=F}
+library(knitr)
+```
+
+### Life Expectancy Estimation with the DEALE Method
+
+Suppose that the 5-year survival probability for 60-year-old white women with disease Y is 60%, and the 10-year survival probability for 60-year-old white women with disease Z is 60%. The estimated life expectancy for a 60-year-old woman is 23.2 years, and the estimated life expectancy for a 55-year-old woman is 27.5 years.
+
+(a) Using the DEALE method, calculate the life expectancy for a 55-year-old white woman with disease Y.
+
+<span style="color:red">SOLUTION</span>
+
+If we assume mortality from Y is constant by age, then we can “borrow” the disease- specific mortality from the 60-year-old white woman with disease Y:
+Excess Mortality of Disease:
+
+\[\mu_c = \mu_{ASR} + \mu_Y\]
+
+We want to know $\mu_Y \implies \mu_Y = \mu_c - \mu_{ASR}$.
+
+We are given the 5-year probability of survival with disease Y, and using the formula $S(t) = e^{-\mu t}$:
+
+\[S(5) = e^{-5\mu_c} = 0.6\]
+
+\[-5\mu_c = ln(0.6)\]
+
+\[\mu_c = \frac{ln(0.6)}{-5}\]
+
+```{r}
+mu.c.60 <- log(0.6)/(-5)
+print(mu.c.60)
+```
+
+We know that Life Expectancy at age 60 is 23.2 ($LE_{60} = 23.2$). We can use this to calculate $\mu_{ASR}$:
+
+\[LE_{60} = 23.2 \implies \mu_{ASR} = \frac{1}{23.2}\]
+
+```{r}
+mu.asr.60 <- 1/23.2
+print(mu.asr.60)
+```
+
+Now that we know $\mu_{ASR}$ and $\mu_{c}$, we can calculate $\mu_Y$:
+
+```{r}
+mu.y <- mu.c.60 - mu.asr.60
+print(mu.y)
+```
+
+Now we can calculate $\mu_{ASR}$ for the 55 year old woman. We know that Life Expectancy at age 55 is 27.5 ($LE_{55} = 27.5$):
+
+\[LE_{55} = 27.5 \implies \mu_{ASR} = \frac{1}{27.5}\]
+
+```{r}
+mu.asr.55 <- 1/27.5
+print(mu.asr.55)
+```
+
+Now we can estimate life expectancy using DEALE, which states that:
+
+\[LE = \frac{1}{\mu} = \frac{1}{\mu_{ASR} + \mu_Y}\]
+
+For the 55 year old woman, assuming that $\mu_Y$ is constant between ages:
+
+```{r}
+LE.55 <- 1/(mu.asr.55 + mu.y)
+print(LE.55)
+```
+
+
+
+(b) Using the DEALE method, calculate the life expectancy for 55-year-old white women with both disease Y and disease Z.
+
+<span style="color:red">SOLUTION</span>
+
+
+In this case, we need to solve for $\mu_Z$, therefore excess mortality of disease is:
+
+\[\mu_c = \mu_{ASR} + \mu_Y + \mu_Z\]
+
+We know that the 10-year survival probability for 60-year-old white women with disease Z is 60\%:
+
+\[S(10) = e^{-10\mu_c} = 0.6\]
+
+\[-10\mu_c = ln(0.6)\]
+
+\[\mu_c = \frac{ln(0.6)}{-10}\]
+
+```{r}
+mu.c.60 <- log(0.6)/-10
+print(mu.c.60)
+```
+
+We have already calculated $\mu_{ASR}$ for the 55-year old woman, and we assume $\mu_Y$ to be constant, so let us also assume $\mu_Z$ to be constant. 
+
+Solving for $\mu_Z$:
+
+\[\mu_Z = \mu_c - \mu_{ASR}\]
+
+```{r}
+mu.z <- mu.c.60 - mu.asr.60 
+print(mu.z)
+```
+
+Now we can estimate life expectancy using DEALE, which states that:
+
+\[LE = \frac{1}{\mu} = \frac{1}{\mu_{ASR} + \mu_Y + \mu_Z}\]
+
+For the 55 year old woman, assuming that $\mu_Y$ and $\mu_Z$ is constant between ages:
+
+```{r}
+LE.55 <- 1/(mu.asr.55 + mu.y + mu.z)
+print(LE.55)
+```
+
+
+
+
+
