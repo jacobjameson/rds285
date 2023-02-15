@@ -12,8 +12,10 @@ objective is to maximize life expectancy. The decision tree is shown in the figu
  
 ### Model
 
-(tree.png)[]
+![](https://github.com/jacobjameson/rds285/blob/main/lab_1/tree.png)
+
 
 ### Sensitivity Analysis of Prevalence
 
-[1-Way Sensitivity Chart.png]()
+![](https://github.com/jacobjameson/rds285/blob/main/lab_1/1-Way%20Sensitivity%20Chart.png)
+
