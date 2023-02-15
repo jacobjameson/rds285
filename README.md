@@ -2,4 +2,4 @@
 ## Decision Analysis for Public Health
 
 
-[Lab 2](https://jacobjameson.com/rds285/lab_2/lab_2.html)
+[Lab 3](https://jacobjameson.com/rds285/lab_3/lab_3.html)
