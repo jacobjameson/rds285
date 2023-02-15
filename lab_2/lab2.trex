@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ASCII"?>
+<xmi:XMI xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:notation="http://www.eclipse.org/gmf/runtime/1.0.2/notation" xmlns:tree="http://www.treeage.com/modeldefs/tree">
+  <tree:Tree xmi:id="__kMEoK1PEe2m7rTaA_WnHA">
+    <Node xmi:id="__kMEoa1PEe2m7rTaA_WnHA" NameID="Node1" NodeType="DecisionNode"/>
+    <CategoriesRoot xmi:id="__kMEoq1PEe2m7rTaA_WnHA"/>
+    <PreferenceSet xmi:id="__kMEo61PEe2m7rTaA_WnHA" NameID="Pref. set 1">
+      <Preference xmi:id="__kMEpK1PEe2m7rTaA_WnHA" Name="locale" Value="en_US"/>
+    </PreferenceSet>
+  </tree:Tree>
+  <notation:Diagram xmi:id="__kMEpa1PEe2m7rTaB-WnHA" type="TreeDocument" element="#__kMEoK1PEe2m7rTaA_WnHA" measurementUnit="Himetric">
+    <children xmi:id="__kMEpq1PEe2m7rTaB-WnHA" type="TreeDocument_Tree">
+      <children xmi:id="__kMEp61PEe2m7rTaB-WnHA" type="DecisionNode" element="#__kMEoa1PEe2m7rTaA_WnHA">
+        <children xmi:id="__kMEqK1PEe2m7rTaB-WnHA" type="TreeNode_Label"/>
+        <children xmi:id="__kMEqa1PEe2m7rTaB-WnHA" type="TreeNode_Probability"/>
+        <children xmi:id="__kMEqq1PEe2m7rTaC9WnHA" type="TreeNode_Variables"/>
+        <styles xsi:type="notation:ShapeStyle" xmi:id="__kMEq61PEe2m7rTaC9WnHA" fontName="Segoe UI" lineColor="0"/>
+      </children>
+      <styles xsi:type="notation:ShapeStyle" xmi:id="__kMErK1PEe2m7rTaC9WnHA" fontName="Segoe UI" lineColor="0"/>
+      <layoutConstraint xsi:type="notation:Bounds" xmi:id="__kMEra1PEe2m7rTaC9WnHA"/>
+    </children>
+    <children xmi:id="__kMErq1PEe2m7rTaC9WnHA" type="TreeExpectedValues">
+      <children xsi:type="notation:Shape" xmi:id="__kMEr61PEe2m7rTaD8WnHA" type="ExpectedValue" element="#__kMEp61PEe2m7rTaB-WnHA" fontName="Segoe UI" description="Text" lineColor="0">
+        <children xsi:type="notation:BasicDecorationNode" xmi:id="__kMEsK1PEe2m7rTaD8WnHA" type="DiagramName"/>
+        <children xsi:type="notation:BasicDecorationNode" xmi:id="__kMEsa1PEe2m7rTaD8WnHA" type="Description"/>
+        <layoutConstraint xsi:type="notation:Bounds" xmi:id="__kMEsq1PEe2m7rTaD8WnHA" x="132" y="-186"/>
+      </children>
+      <element xsi:nil="true"/>
+    </children>
+    <children xmi:id="__kMEs61PEe2m7rTaD8WnHA" type="TreeTables">
+      <element xsi:nil="true"/>
+    </children>
+    <children xmi:id="__kMEtK1PEe2m7rTaE7WnHA" type="TreeDocument_Notes">
+      <element xsi:nil="true"/>
+    </children>
+    <styles xsi:type="notation:DiagramStyle" xmi:id="__kMEta1PEe2m7rTaE7WnHA">
+      <verticalGuides xmi:id="__kMEtq1PEe2m7rTaE7WnHA" position="164">
+        <nodeMap xmi:id="__kMEt61PEe2m7rTaE7WnHA" value="Right" key="#__kMEp61PEe2m7rTaB-WnHA"/>
+      </verticalGuides>
+    </styles>
+  </notation:Diagram>
+</xmi:XMI>
