@@ -470,6 +470,129 @@ disease Y who is receiving treatment Q:</p>
 print(LE.55)</code></pre>
 <pre><code>## [1] 11.95987</code></pre>
 </div>
+<div id="probability-estimation" class="section level3">
+<h3>Probability Estimation</h3>
+<ol style="list-style-type: lower-alpha">
+<li>A trial that compared a cholesterol-lowering drug versus placebo
+estimated 5-year survival probabilities of 85% for the placebo arm and
+90% for the treatment arm. The expected 5-year probability of dying for
+a cohort of similar age, sex, and race over 5 years is 3%.</li>
+</ol>
+<p>(i.) What is the percent reduction in the overall mortality rate
+provided by treatment? What is the percent reduction in the
+disease-specific mortality rate provided by treatment?</p>
+<p><span style="color:red">SOLUTION</span></p>
+<p>In the <strong>placebo group</strong>, the 5 year survival
+probability is 85% , implying:</p>
+<p><span class="math display">\[S(5) = 0.85 \implies 0.85 =
+e^{-5\mu_{placebo}} \implies \mu_{placebo} =
+\frac{ln(0.85)}{-5}\]</span></p>
+<pre class="r"><code>mu.placebo &lt;- log(0.85)/-5
+print(mu.placebo)</code></pre>
+<pre><code>## [1] 0.03250379</code></pre>
+<p>In the <strong>treatment group</strong>, the 5 year survival
+probability is 90% , implying:</p>
+<p><span class="math display">\[S(5) = 0.9 \implies 0.9 =
+e^{-5\mu_{treat}} \implies \mu_{treat} = \frac{ln(0.9)}{-5}\]</span></p>
+<pre class="r"><code>mu.treat &lt;- log(0.9)/-5
+print(mu.treat)</code></pre>
+<pre><code>## [1] 0.0210721</code></pre>
+<p>The percent risk reduction in <strong>overall</strong> mortality rate
+can be calculated:</p>
+<p><span class="math display">\[ = (1 -
+\frac{\mu_{treat}}{\mu_{placebo}})*100\]</span></p>
+<pre class="r"><code>risk.reduction.overall &lt;- (1 - (mu.treat/mu.placebo))*100
+print(risk.reduction.overall)</code></pre>
+<pre><code>## [1] 35.17031</code></pre>
+<p>The background 5 year survival probability is 97% , implying:</p>
+<p><span class="math display">\[S(5) = 0.97 \implies 0.97 =
+e^{-5\mu_{ASR}} \implies \mu_{ASR} = \frac{ln(0.97)}{-5}\]</span></p>
+<pre class="r"><code>mu.asr &lt;- log(0.97)/-5
+print(mu.asr)</code></pre>
+<pre><code>## [1] 0.006091841</code></pre>
+<p>We can calculate the disease specific mortalities, <span class="math inline">\(\mu_{treat}\)</span> and <span class="math inline">\(\mu_{placebo}\)</span>:</p>
+<p><span class="math display">\[\mu_{placebo}&#39; = \mu_{placebo} -
+\mu_{ASR}\]</span></p>
+<p><span class="math display">\[\mu_{treat}&#39; = \mu_{treat} -
+\mu_{ASR}\]</span></p>
+<pre class="r"><code>mu.placebo.prime &lt;- mu.placebo - mu.asr
+mu.treat.prime &lt;- mu.treat - mu.asr
+
+print(mu.placebo.prime)</code></pre>
+<pre><code>## [1] 0.02641194</code></pre>
+<pre class="r"><code>print(mu.treat.prime)</code></pre>
+<pre><code>## [1] 0.01498026</code></pre>
+<p>Percent risk reduction in <strong>disease-specific</strong> mortality
+rate:</p>
+<pre class="r"><code>risk.reduction.disease &lt;- (1 - (mu.treat.prime/mu.placebo.prime))*100
+print(risk.reduction.disease)</code></pre>
+<pre><code>## [1] 43.28225</code></pre>
+<p>(ii.) The clinical trial also estimated 5-year “event-free” survival
+probabilities of 78% for the placebo arm and 85% for the treatment arm,
+where event is defined as either death from any cause or a nonfatal
+heart attack. What is the rate of nonfatal heart attack in each arm?</p>
+<p><span style="color:red">SOLUTION</span></p>
+<p>In the <strong>placebo group</strong>, the 5 year survival
+probability is 78% , implying:</p>
+<p><span class="math display">\[S(5) = 0.78 \implies 0.78 =
+e^{-5\mu_{placebo}} \implies \mu_{placebo} =
+\frac{ln(0.78)}{-5}\]</span></p>
+<pre class="r"><code>mu.placebo.ef &lt;- log(0.78)/-5
+print(mu.placebo.ef)</code></pre>
+<pre><code>## [1] 0.04969227</code></pre>
+<p>In the <strong>treatment group</strong>, the 5 year survival
+probability is 85% , implying:</p>
+<p><span class="math display">\[S(5) = 0.85 \implies 0.85 =
+e^{-5\mu_{treat}} \implies \mu_{treat} =
+\frac{ln(0.85)}{-5}\]</span></p>
+<pre class="r"><code>mu.treat.ef &lt;- log(0.85)/-5
+print(mu.treat.ef)</code></pre>
+<pre><code>## [1] 0.03250379</code></pre>
+<p>Rate of non-fatal heart attacks (<span class="math inline">\(\mu_{NFMI}\)</span>) = total event rate -
+mortality rate:</p>
+<p><span class="math display">\[\mu_{NFMI_{placebo}} = 0.0497 -
+0.0325\]</span></p>
+<pre class="r"><code>mu.placebo.ef - mu.placebo</code></pre>
+<pre><code>## [1] 0.01718849</code></pre>
+<p><span class="math display">\[\mu_{NFMI_{treat}} = 0.0325 -
+0.0211\]</span></p>
+<pre class="r"><code>mu.treat.ef - mu.treat</code></pre>
+<pre><code>## [1] 0.01143168</code></pre>
+<ol start="2" style="list-style-type: lower-alpha">
+<li>The following table provides data on the cumulative probability of
+slipping on ice for persons moving to Alaska. You may assume no deaths
+occur during this time period.</li>
+</ol>
+<table>
+<tbody>
+<tr class="odd">
+<td>Year (<span class="math inline">\(t\)</span>)</td>
+<td>Pr (Event <span class="math inline">\(&lt; t\)</span>)</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>0.08</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>0.12</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>0.15</td>
+</tr>
+<tr class="odd">
+<td>5</td>
+<td>0.20</td>
+</tr>
+</tbody>
+</table>
+<p>Calculate the annual rate of ice slipping assuming that it is
+constant over the five years. Now calculate annual rates for each time
+period (you will assume that the annual rates in the fourth and fifth
+years are the same). What might be a reasonable rate to assume for Year
+6?</p>
+</div>
 
 
 

@@ -143,6 +143,134 @@ LE.55 <- 1/(mu.asr.55 + mu.y.tx)
 print(LE.55)
 ```
 
+### Probability Estimation
+
+
+(a) A trial that compared a cholesterol-lowering drug versus placebo estimated 5-year survival probabilities of 85\% for the placebo arm and 90\% for the treatment arm. The expected 5-year probability of dying for a cohort of similar age, sex, and race over 5 years is 3\%.
+
+
+(i.) What is the percent reduction in the overall mortality rate provided by treatment? What is the percent reduction in the disease-specific mortality rate provided by treatment?
+
+
+<span style="color:red">SOLUTION</span>
+
+In the **placebo group**, the 5 year survival probability is 85\% , implying:
+
+\[S(5) = 0.85 \implies 0.85 = e^{-5\mu_{placebo}} \implies \mu_{placebo} = \frac{ln(0.85)}{-5}\]
+
+```{r}
+mu.placebo <- log(0.85)/-5
+print(mu.placebo)
+```
+
+In the **treatment group**, the 5 year survival probability is 90\% , implying:
+
+\[S(5) = 0.9 \implies 0.9 = e^{-5\mu_{treat}} \implies \mu_{treat} = \frac{ln(0.9)}{-5}\]
+
+```{r}
+mu.treat <- log(0.9)/-5
+print(mu.treat)
+```
+
+
+The percent risk reduction in **overall** mortality rate can be calculated:
+
+\[ = (1 - \frac{\mu_{treat}}{\mu_{placebo}})*100\]
+
+```{r}
+risk.reduction.overall <- (1 - (mu.treat/mu.placebo))*100
+print(risk.reduction.overall)
+```
+
+The background 5 year survival probability is 97\% , implying:
+
+\[S(5) = 0.97 \implies 0.97 = e^{-5\mu_{ASR}} \implies \mu_{ASR} = \frac{ln(0.97)}{-5}\]
+
+```{r}
+mu.asr <- log(0.97)/-5
+print(mu.asr)
+```
+
+We can calculate the disease specific mortalities, $\mu_{treat}$ and $\mu_{placebo}$:
+
+
+\[\mu_{placebo}' = \mu_{placebo} - \mu_{ASR}\]
+
+
+\[\mu_{treat}' = \mu_{treat} - \mu_{ASR}\]
+
+
+```{r}
+mu.placebo.prime <- mu.placebo - mu.asr
+mu.treat.prime <- mu.treat - mu.asr
+
+print(mu.placebo.prime)
+print(mu.treat.prime)
+```
+
+
+Percent risk reduction in **disease-specific** mortality rate:
+
+```{r}
+risk.reduction.disease <- (1 - (mu.treat.prime/mu.placebo.prime))*100
+print(risk.reduction.disease)
+```
+
+
+
+
+(ii.) The clinical trial also estimated 5-year “event-free” survival probabilities of 78% for the placebo arm and 85% for the treatment arm, where event is defined as either death from any cause or a nonfatal heart attack. What is the rate of nonfatal heart attack in each arm?
+
+
+<span style="color:red">SOLUTION</span>
+
+
+In the **placebo group**, the 5 year survival probability is 78\% , implying:
+
+\[S(5) = 0.78 \implies 0.78 = e^{-5\mu_{placebo}} \implies \mu_{placebo} = \frac{ln(0.78)}{-5}\]
+
+```{r}
+mu.placebo.ef <- log(0.78)/-5
+print(mu.placebo.ef)
+```
+
+In the **treatment group**, the 5 year survival probability is 85\% , implying:
+
+\[S(5) = 0.85 \implies 0.85 = e^{-5\mu_{treat}} \implies \mu_{treat} = \frac{ln(0.85)}{-5}\]
+
+```{r}
+mu.treat.ef <- log(0.85)/-5
+print(mu.treat.ef)
+```
+
+
+Rate of non-fatal heart attacks ($\mu_{NFMI}$) = total event rate - mortality rate:
+
+\[\mu_{NFMI_{placebo}} = 0.0497 - 0.0325\]
+
+```{r}
+mu.placebo.ef - mu.placebo
+```
+\[\mu_{NFMI_{treat}} = 0.0325 - 0.0211\]
+
+
+```{r}
+mu.treat.ef - mu.treat
+```
+
+(b) The following table provides data on the cumulative probability of slipping on ice for persons moving to Alaska. You may assume no deaths occur during this time period.
+
+
+| |  |
+|---|---|
+| Year ($t$)  | Pr (Event $< t$)  |
+| 1  |  0.08 |
+| 2  |  0.12 |
+| 3  | 0.15  |
+| 5  |  0.20 |
+
+Calculate the annual rate of ice slipping assuming that it is constant over the five years. Now calculate annual rates for each time period (you will assume that the annual rates in the fourth and fifth years are the same). What might be a reasonable rate to assume for Year 6?
+
 
 
 
