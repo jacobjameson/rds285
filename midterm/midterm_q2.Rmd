@@ -1,0 +1,261 @@
+---
+title: "Midterm Question 2"
+author: "Jacob Jameson"
+output:
+  pdf_document: default
+---
+
+
+
+### Question 2 
+
+
+
+Public health officials have recently become concerned about an outbreak of a new disease known as Restless Dream Syndrome (RDS). RDS is characterized by three health states: (1) Asymptomatic (with a low risk of death); (2) Symptomatic (with an elevated risk of death); and (3) Dead.
+
+
+For those with asymptomatic RDS, the annual probability of developing symptoms is 0.04. Also, the annual probability of staying symptomatic for those who have symptoms is 0.75. People who start out asymptomatic live an average of 4 years in the symptomatic state. People who start out symptomatic live 6.25 years on average in the asymptomatic state. Assume that nobody receives treatment, and it is not possible to cure RDS. In thinking about this problem, you can assume that all transitions happen at the end of each year, and that the transition probabilities do not change over time.
+
+
+
+a. [6 points] What is the probability that someone who starts out asymptomatic will still be asymptomatic after one year? What is the probability that someone who starts out symptomatic becomes asymptomatic in one year?
+
+
+\color{red}
+**Known Transition Probabilities**
+
+$P(\text{asymptomatic to symptomatic}) = 0.04$
+
+$P(\text{symptomatic to symptomatic}) = 0.75$
+
+Thus our current transition matrix, $A$, looks like:
+
+\[A =\begin{bmatrix} 
+a_{11} & 0.04 & a_{13} \\
+ b_{21} & 0.75 & b_{23} \\
+ 0 & 0 & 1 \\
+\end{bmatrix} \hspace{1in} \begin{matrix} 
+\text{} & \text{asymptomatic} & \text{symptomatic}  & \text{dead}\\
+\text{asymptomatic} & ? & 0.04 & ? \\
+\text{symptomatic} & ? & 0.75 & ? \\
+\text{dead} & 0 & 0 & 1 \\
+\end{matrix}\]
+
+
+Let $Q$ be the matrix of transitions between the non-absorbing states:
+
+\[Q =\begin{bmatrix} 
+a_{11} & 0.04  \\
+ b_{21} & 0.75
+\end{bmatrix}\]
+
+Let $I$ be the identity matrix:
+
+\[I =\begin{bmatrix} 
+1 & 0  \\
+ 0 & 1 
+\end{bmatrix}\]
+
+
+
+Let $n_{ij}$ be expected residence time (e.g., average years spent) in state $j$, given start in state $i$ at time 0:
+
+
+\[N =\begin{bmatrix} 
+ n_{11} & 4  \\
+ 6.25 & n_{22} \\
+\end{bmatrix} \hspace{1in} \begin{matrix} 
+\text{} & \text{asymptomatic} & \text{symptomatic}\\
+\text{asymptomatic} & n_{11} & 4 \\
+\text{symptomatic} & 6.25 & n_{22} \\
+\end{matrix}\]
+
+
+We want to estimate $a_{11}$ and $b_{21}$, which we can do using the following property:
+
+\[N = (I - Q)^{-1}\]
+
+
+\[I - Q = \begin{bmatrix} 
+1 & 0  \\
+ 0 & 1 
+\end{bmatrix} - \begin{bmatrix} 
+a_{11} & 0.04  \\
+ b_{21} & 0.75
+\end{bmatrix} = \begin{bmatrix} 
+1 - a_{11} & -0.04  \\
+ -b_{21} & 0.25 
+\end{bmatrix}\]
+
+\[(I - Q)^{-1} = \begin{bmatrix} 
+1 - a_{11} & -0.04  \\
+ -b_{21} & 0.25 
+\end{bmatrix}^{-1} = \begin{bmatrix}\frac{0.25}{0.25\left(1-a_{11}\right)-0.04b_{21}}&\frac{0.04}{0.25\left(1-a_{11}\right)-0.04b_{21}}\\ \frac{b_{21}}{0.25\left(1-a_{11}\right)-0.04b_{21}}&\frac{1-a_{11}}{0.25\left(1-a_{11}\right)-0.04b_{21}}\end{bmatrix}\]
+
+Setting equal to $N$:
+
+
+\[\begin{bmatrix}\frac{0.25}{0.25\left(1-a_{11}\right)-0.04b_{21}}&\frac{0.04}{0.25\left(1-a_{11}\right)-0.04b_{21}}\\\frac{b_{21}}{0.25\left(1-a_{11}\right)-0.04b_{21}}&\frac{1-a_{11}}{0.25\left(1-a_{11}\right)-0.04b_{21}}
+\end{bmatrix} = \begin{bmatrix}
+ n_{11} & 4  \\
+ 6.25 & n_{22} \\
+\end{bmatrix}\]
+
+
+Now we just need to solve the system of equations:
+
+\[\frac{0.04}{0.25(1-a_{11})-0.04b_{21}} = 4\]
+
+\[\frac{b_{21}}{0.25(1-a_{11})-0.04b_{21}} = 6.25\]
+
+
+We can rewrite this as:
+
+\[a_{11} + 0.16b_{21} = 0.96\]
+
+
+\[a_{11} + 0.8b_{21} = 1\]
+
+Solving we get:
+
+```{r}
+A <- matrix(c(1, 0.16, 1, 0.8), nrow = 2, ncol = 2, byrow = T)
+b <- matrix(c(0.96, 1), nrow = 2, ncol = 1, byrow = T)
+
+solve(A, b)
+```
+
+\[a_{11} = 0.95 \hspace{0.5in} b_{21} = 0.0625\]
+
+
+Therefore:
+
+$\boxed{P(\text{asymptomatic to asymptomatic}) = 0.95}$
+
+$\boxed{P(\text{symptomatic to aymptomatic}) = 0.0625}$
+
+
+\color{black}
+
+\newpage
+
+
+b. [2 points] Given your answer to part (a), what is your transition matrix for RDS?
+
+
+
+\color{red}
+
+
+Given my answer to part (a), the transition matrix for RDS is:
+
+
+\[A =\begin{bmatrix} 
+0.95 & 0.04 & 0.01 \\
+0.0625 & 0.75 & 0.1875 \\
+ 0 & 0 & 1 \\
+\end{bmatrix} \hspace{1in} \begin{matrix} 
+\text{} & \text{asymptomatic} & \text{symptomatic}  & \text{dead}\\
+\text{asymptomatic} & 0.95 & 0.04 & 0.01 \\
+\text{symptomatic} & 0.0625 & 0.75 & 0.1875 \\
+\text{dead} & 0 & 0 & 1 \\
+\end{matrix}\]
+
+
+\color{black}
+
+
+
+c. [4 points] Asymptomatic patients have a utility of 1 and symptomatic patients have a utility of 0.4. The quality-adjusted life expectancy for a cohort of patients with RDS is estimated to be 15.59 years. What percentage of the starting cohort is symptomatic?
+
+
+
+\color{red}
+
+
+Now that we know the transition matrix, we can determine what percentage of the starting cohort is symptomatic based on the matrix $N$.
+
+Recall,
+
+\[N = (I - Q)^{-1} =  \begin{bmatrix} 
+0.05 & -0.04  \\
+ -0.0625 & 0.25 
+\end{bmatrix}^{-1} = \begin{bmatrix}25&4\\ 6.25&5\end{bmatrix}\]
+
+
+\[LE_{asymptomatic} = 29 \hspace{1in} LE_{symptomatic} = 11.25\]
+
+
+Now we can solve for the percentage of the starting cohort is symptomatic
+
+\[29(1-p) + 11.25p(0.4) = 15.9\]
+
+\[\boxed{p \approx 0.5346}\]
+
+To check this answer, I run the following simulation with these starting proportions until 99\% of the population is dead:
+
+```{r}
+# Define the starting population and probability matrix
+pop <- matrix(c(0.4654, 0.5346, 0), nrow = 1, ncol = 3)
+utility.weights <- matrix(c(1, 0.4, 0), nrow = 1, ncol = 3)
+
+probability_matrix <- matrix(c(0.95, 0.04, 0.01, 
+                               0.0625, 0.75, 0.1875, 
+                               0, 0, 1), nrow = 3, byrow = TRUE)
+table <- data.frame()
+table <- rbind(table, pop)
+
+# Simulate cycles until more than 99% are dead
+payoffs <- c(0)
+
+while (pop[,3] < 0.99){
+  
+  pop <- pop %*% probability_matrix
+  payoffs <- c(payoffs, payoffs[length(payoffs)] +
+                 sum(geometry::dot(pop, utility.weights, d=T)))
+  
+  table <- rbind(table, pop)
+}
+table$payoffs <- payoffs
+colnames(table) <- c('asymptomatic', 'symptomatic', 'dead', 'cum. Reward')
+
+table[c(1:10, nrow(table)),]
+```
+
+
+
+I get approximately 15.89 in my approximation in this simulation which is very close to the 15.59. This simulation approximates 15.59 even closer when the proportion symptomatic to start with is 0.551.
+
+
+
+```{r}
+# Define the starting population and probability matrix
+pop <- matrix(c(0.449, 0.551, 0), nrow = 1, ncol = 3)
+utility.weights <- matrix(c(1, 0.4, 0), nrow = 1, ncol = 3)
+
+probability_matrix <- matrix(c(0.95, 0.04, 0.01, 
+                               0.0625, 0.75, 0.1875, 
+                               0, 0, 1), nrow = 3, byrow = TRUE)
+table <- data.frame()
+table <- rbind(table, pop)
+
+# Simulate cycles until more than 99% are dead
+payoffs <- c(0)
+
+while (pop[,3] < 0.99){
+  
+  pop <- pop %*% probability_matrix
+  payoffs <- c(payoffs, payoffs[length(payoffs)] +
+                 sum(geometry::dot(pop, utility.weights, d=T)))
+  
+  table <- rbind(table, pop)
+}
+table$payoffs <- payoffs
+colnames(table) <- c('asymptomatic', 'symptomatic', 'dead', 'cum. Reward')
+
+table[c(1:10, nrow(table)),]
+```
+
+
+
+

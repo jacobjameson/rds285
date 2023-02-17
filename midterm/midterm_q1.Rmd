@@ -1,0 +1,225 @@
+---
+title: "Midterm Question 1"
+author: "Jacob Jameson"
+output:
+  pdf_document: default
+---
+
+### Question 1
+
+Chronic hepatitis B (CHB) is a vaccine-preventable disease caused by the hepatitis B virus (HBV). CHB can lead to severe inflammation and damage in the liver, resulting in cirrhosis and liver failure if left untreated. However, not all who are infected with HBV will exhibit symptoms: HBV carriers have asymptomatic infection but can still pass HBV to others and are at higher risk of developing complications, such as liver damage, than a healthy person. Healthy 50-year-old men without hepatitis B have a life expectancy of 26.2 years, while 50-year-old men with symptomatic CHB have a life expectancy of 15.7 years. 50-year-old men who are HBV carriers have a life expectancy of 24.3 years.
+
+
+
+a. [3 points] Assuming that you do not have a life table, under an excess mortality model, what is your estimate for the excess mortality rate associated with CHB? What is your estimate for the excess mortality rate for HBV carriers? What assumption(s), if any, did you make?
+
+\color{red}
+
+To estimate excess mortality of disease rate associated with CHB, recall:
+
+\[\mu_c = \mu_{ASR} + \mu_{CHB}\]
+
+\[\implies \mu_{CHB} = \mu_c - \mu_{ASR}\]
+
+
+We are given the life expectancy of a health 50-year-old man without hepatitis B ($LE_{50} = 26.2$), meaning that we can calculate $\mu_{ASR}$:
+
+\[\mu_{ASR} = \frac{1}{26.2}\]
+
+
+```{r}
+mu.asr <- 1/26.2
+mu.asr
+```
+
+We are also given the life expectancy of a health 50-year-old man with symptomatic CHB ($LE_{50} = 15.7$), meaning that we can calculate $\mu_c$:
+
+\[\mu_{c} = \frac{1}{15.7}\]
+
+```{r}
+mu.c <- 1/15.7
+mu.c
+```
+
+Now we estimate the excess mortality rate associated with CHB:
+
+\[\mu_{CHB} = \mu_c - \mu_{ASR}\]
+
+\[\mu_{CHB} = 0.06369427 - 0.03816794 = \boxed{0.02552633}\]
+
+```{r}
+mu.chb <- mu.c - mu.asr
+mu.chb
+```
+
+To estimate excess mortality of disease rate for HBV carriers, recall:
+
+\[\mu_c = \mu_{ASR} + \mu_{HBV}\]
+
+\[\implies \mu_{HBV} = \mu_c - \mu_{ASR}\]
+
+We have already solved for $\mu_{ASR}$, so now we need to solve for $\mu_c$ for HBV carriers:
+
+\[\mu_{c} = \frac{1}{24.3}\]
+
+```{r}
+mu.c <- 1/24.3
+mu.c
+```
+
+Now we estimate the excess mortality rate associated with HBV:
+
+\[\mu_{HBV} = \mu_c - \mu_{ASR}\]
+
+\[\mu_{HBV} = 0.04115226 - 0.03816794 = \boxed{0.002984324}\]
+
+```{r}
+mu.hbv <- mu.c - mu.asr
+mu.hbv
+```
+
+In order to make these estimates, I am assuming that age and sex are the only relevant characteristic here when we assume mortality rates. Meaning that I assume the only excess mortality risk for 50 year old man who has CHB compared to the 50 year old man that does not is $\mu_{CHB}$. 
+
+
+
+\color{black}
+
+
+\newpage
+
+b. [2 points] Nucleoside analogues (NAs) are a class of antiviral drugs used in the management of symptomatic hepatitis B. NAs reduce the all-cause mortality rate for men with CHB by 14.5\%. Assuming NAs do not affect background mortality, by what percentage do NAs reduce the excess mortality rate associated with symptomatic CHB?
+
+
+\color{red}
+We know from part (a) that the all-cause mortality rate for men with CHB is $\mu_c = 0.06369427$. If this rate sees a 14.5\% reduction:
+
+\[\mu_c' = (1 - 0.145)*mu_c = 0.0544586\]
+
+```{r}
+mu.c <- 1/15.7
+mu.c.prime <-  (1 - 0.145)*mu.c
+mu.c.prime
+```
+
+So if the drug makes it such that $\mu_c' = 0.0544586$:
+
+\[\mu_{CHB}' = \mu_c'- \mu_{ASR}\]
+
+\[\mu_{CHB}' = 0.0544586 - 0.03816794 = \boxed{0.01629066}\]
+
+```{r}
+mu.chb.prime <- mu.c.prime - mu.asr
+mu.chb.prime
+```
+
+Now we can solve for by what percentage do NAs reduce the excess mortality rate associated with symptomatic CHB:
+
+\[\Delta_{\mu_{CHB}} = \frac{\mu_{CHB}' - \mu_{CHB}}{\mu_{CHB}}\]
+
+```{r}
+(mu.chb.prime - mu.chb)/(mu.chb)
+```
+
+This translates to approximately a 36.18\% decrease in the excess mortality rate associated with symptomatic CHB.
+
+
+
+
+\color{black}
+
+\newpage
+
+c. [2 points] 50-year-old men in the general population (including individuals with and without symptomatic CHB) have a 2% chance of developing cirrhosis in the next 10 years, conditional on surviving to age 60. Individuals with symptomatic CHB, however, have a higher risk of cirrhosis: 50-year-old men with symptomatic CHB have a 25% chance of developing cirrhosis in the next 10 years (again, conditional on surviving to age 60). The prevalence of symptomatic CHB in 50-year-old men is 0.5%. What is the risk ratio of developing cirrhosis in the next 10 years for 50-year-old men with symptomatic CHB compared to those without symptomatic CHB?
+
+
+\color{red}
+
+Risk of developing cirrhosis in the next 10 years for 50-year-old men with symptomatic CHB = 25\%
+
+Risk of developing cirrhosis in the next 10 years for 50-year-old men general population = 2\%
+
+We need to solve for the risk of developing cirrhosis in the next 10 years for 50-year-old men **without**  symptomatic CHB. Thus we need to solve the following equation:
+
+\[0.005(0.25) + 0.995x = 0.02\]
+
+\[x = \frac{0.02 - 0.005(0.25)}{0.995}\]
+
+```{r}
+(0.02 - 0.005*(0.25))/0.995
+```
+
+Thus, the risk of developing cirrhosis in the next 10 years for 50-year-old men **without** symptomatic CHB = 1.88\%.
+
+
+\[RR = \frac{0.25}{0.01884422}\]
+
+
+```{r}
+0.25/0.01884422
+```
+
+Thus we can say, 50-year-old men with symptomatic CHB have 13.27 times the risk of developing cirrhosis in the next 10 years compared to 50-year-old men those without symptomatic CHB.
+
+
+\color{black}
+
+
+
+
+\newpage
+
+
+d. [1 point] Assuming that the rates of cirrhosis calculated in part (c) are constant over time, what is the risk ratio of developing cirrhosis in the next 1 year for 50-year-old men with symptomatic CHB compared to those without symptomatic CHB?
+
+
+
+
+\color{red}
+Assuming that the rates of cirrhosis calculated in part (c) are constant over time, the risk of developing cirrhosis in the next 1 year for 50-year-old men with symptomatic CHB is:
+
+\[p(10) = 1 - e^{-10\mu_{s}} = 0.25\]
+
+\[\implies \mu_{s} = -\frac{ln(1 - 0.25)}{10}\]
+
+```{r}
+mu.symptomatic <- -log(1 - 0.25)/10
+mu.symptomatic
+```
+
+\[p(1) = 1 - e^{-1(0.02876821)}\]
+
+```{r}
+risk.symptomatic <- 1 - exp(-1*(0.02876821))
+risk.symptomatic
+```
+
+
+Assuming that the rates of cirrhosis calculated in part (c) are constant over time, the risk of developing cirrhosis in the next 1 year for 50-year-old men without symptomatic CHB is:
+
+
+\[p(10) = 1 - e^{-10\mu_{a}} = 0.01884422\]
+
+\[\implies \mu_{a} = -\frac{ln(1 - 0.01884422)}{10}\]
+
+```{r}
+mu.asymptomatic <- -log(1 - 0.01884422)/10
+mu.asymptomatic
+```
+
+\[p(1) = 1 - e^{-1(0.001902403)}\]
+
+```{r}
+risk.asymptomatic <- 1 - exp(-1*(0.001902403))
+risk.asymptomatic
+```
+
+```{r}
+risk.symptomatic/risk.asymptomatic
+```
+
+Thus we can say, 50-year-old men with symptomatic CHB have 14.92 times the risk of developing cirrhosis in the next 1 year compared to 50-year-old men those without symptomatic CHB (assuming rates of cirrhosis calculated in part (c) are constant over time).
+
+
+
+\color{black}
+
