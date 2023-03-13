@@ -1,0 +1,110 @@
+---
+title: "Practice Final"
+author: "Jacob Jameson"
+output: pdf_document
+---
+
+```{r, include=F, message=F}
+library(kableExtra)
+library(knitr)
+```
+
+
+Lin-Somnia
+This year, a peculiar epidemic has been sweeping the nation among men in their mid-20s, resulting in high mortality due to complete inability to sleep while endlessly searching the internet for stories on celebrity athletes. Scientists, stumped by this unusual phenomenon, refer to it as “Lin-Somnia,” hypothesizing that these men have become completely obsessed with the stardom of Jeremy Lin, the point-guard for the Brooklyn Nets basketball team. In order to address the urgent situation, the U.S. Centers for Disease Control and Prevention (CDC) commissions a research group at the National Beauty-sleep Association (NBA) to immediately begin a study to evaluate strategies in the prevention of deaths attributable to Lin-Somnia.
+
+It turns out that epidemiologists at HSPH have already studied two strategies to improve survival with Lin-Somnia after a smaller epidemic occurred in Cambridge while Jeremy Lin was an undergraduate Harvard student. The following table gives survival probabilities (i.e., survival from all causes of mortality) from a 5-year randomized trial of 25-year-old men diagnosed with Lin-Somnia who were assigned to (1) take sleeping pills or (2) cancel their internet subscription throughout the trial. In this question, use the 2018 US life tables (posted along with this practice exam) to inform age-specific background mortality rates.
+
+
+
+
+(a) For each of the study arms, calculate the disease specific mortality rates foe each year of the trial. What disease-specific mortality rates might you use for Year 6 and beyond for each group (note: use your judgment; there is no single correct answer here)? (5 points)
+
+
+ 
+Survival probability, $S(t)$, is a cumulative probability to time t. Calculation of disease-specific annual mortality rates involves the following steps (or close variation) for each of the two study groups:  
+
+1. calculate cumulative incidence (CI) of death:  $CI(t) = 1 - S(t)$
+
+2. calculate annual probability of overall mortality:  $p_1(t) = CI(t+1) - CI(t)$
+
+3. calculate annual probability, conditional on survival to time t:  $p_2(t) = p_1(t) / S(t)$
+
+4. convert probability to rate:  $\mu(t) = \frac{-ln(1-p_2(t))}{t} \text{where } t=1$
+
+5. subtract out age, sex, race related (background) mortality from overall mortality: 
+\[\mu_\text{overall}(t) - \mu_{asr}(t) = \mu_{lin}(t)\]
+ 
+ 
+```{r, warning=F, message=F}
+sleeping.pill.survival.t <- c(1.0, 0.92, 0.77, 0.61, 0.47)
+sleeping.pill.CI.t <- 1 - sleeping.pill.survival.t
+sleeping.pill.p1 <- diff(sleeping.pill.CI.t)
+sleeping.pill.p2 <- sleeping.pill.p1/sleeping.pill.survival.t[1:5]
+
+
+pad_vectors <- function(vectors) {
+  # Find the length of the longest vector
+  max_len <- max(sapply(vectors, length))
+  
+  # Pad the shorter vectors with NA values
+  lapply(vectors, function(x) {
+    if (length(x) < max_len) {
+      c(x, rep(NA, max_len - length(x)))
+    } else {
+      x
+    }
+  })
+}
+
+
+vectors <- list(sleeping.pill.survival.t, sleeping.pill.CI.t, 
+                sleeping.pill.p1, sleeping.pill.p2)
+
+padded_vectors <- pad_vectors(vectors)
+
+
+sleeping.pill.mu <- -log(1-sleeping.pill.p2)/1
+
+life.table.mortality <- c(0.00153, 0.00159, 0.00163, 
+                          0.00168, 0.00173, 0.00178)
+disease.spec <- sleeping.pill.mu - life.table.mortality
+
+# Create a data frame containing the vectors
+df <- cbind(padded_vectors[[1]], padded_vectors[[2]], 
+            padded_vectors[[3]], padded_vectors[[4]],
+            padded_vectors[[5]], sleeping.pill.mu, 
+            disease.spec)
+
+# Use kable to create a table
+kable(df, format = "markdown", 
+      caption = "Table of Sleeping Pill and Mortality Data",
+      col.names = c('S(t)', 'CI(t)', 'p1', 'p2','mu{annual}', 
+                    'mu_{asr}', 'mu_{lin}'))
+```
+ 
+```{r, warning=F, message=F}
+cancel.internet.survival.t <- c(1.0, 0.74, 0.64, 0.56, 0.49, 0.42)
+cancel.internet.CI.t <- 1 - cancel.internet.survival.t
+cancel.internet.p1 <- diff(cancel.internet.CI.t)
+cancel.internet.p2 <- cancel.internet.p1/cancel.internet.survival.t[1:5]
+cancel.internet.mu <- -log(1-cancel.internet.p2)/1
+
+disease.spec <- cancel.internet.mu - life.table.mortality
+
+# Create a data frame containing the vectors
+df <- cbind(cancel.internet.survival.t, cancel.internet.CI.t, 
+                 cancel.internet.p1, cancel.internet.p2, cancel.internet.mu,
+                 life.table.mortality, disease.spec)
+
+# Use kable to create a table
+kable(df, format = "markdown", 
+      caption = "Table of Canceling Internet and Mortality Data",
+      col.names = c('S(t)', 'CI(t)', 'p1', 'p2','mu{annual}', 
+                    'mu_{asr}', 'mu_{lin}'))
+```
+
+ 
+ 
+ 
+ 

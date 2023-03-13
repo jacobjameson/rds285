@@ -1,0 +1,35 @@
+---
+title: "Bonus"
+author: "Jacob Jameson"
+output: pdf_document
+---
+
+
+
+9. [2 bonus points!] You are working on a cost-effectiveness analysis with a collaborator. They estimate the ICER for the intervention you are studying and find that it is negative. Is this intervention cost-effective? Justify your answer.
+
+\color{blue}
+Recall the formula for calculating ICERs:
+
+For two strategies (A & B), for costs C and effects H:
+
+\[\text{ICER (for A vs. B)} = \frac{C_A - C_B}{H_A - H_B}\]
+
+Where $C_A - C_B$ are the incremental costs of A vs. B, and $H_A - H_B$ are the incremental health benefits of A vs. B.
+
+There are two situations where the ICER could be negative: (1) strategy B will be cheaper and generate greater health benefits than strategy A, or (2) strategy B will be more expensive and generate less health benefits than A. 
+
+Therefore we cannot say whether or not this intervention is cost-effective without more information on the costs of program and the benefits generated. The ICER alone in this situation is not enough to tell us what to do
+\color{black}
+
+
+10. [2 bonus points!] Can the expected value of perfect information (EVPI) ever be negative, or zero? Explain your answer.
+
+
+
+\color{blue}
+
+Recall that expected value of perfect information is the price that a decision maker would be willing to pay to have perfect information regarding all factors that influence which treatment choice is preferred as the result of a cost-effectiveness analysis. Therefore this value needs to either be positive or zero, but never negative. It doesn't make any sense to say that they would pay a negative price for perfect information.
+
+
+
